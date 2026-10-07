@@ -1,0 +1,27 @@
+Bài 3 : Kiến trúc sư hạ tầng Cloud Server
+Phần 1: Mã nguồn (Chuỗi lệnh Windows PowerShell)
+# 1. Tạo cấu trúc cây thư mục
+New-Item -Path ".\Farm-Manager\code\app", ".\Farm-Manager\database\db", ".\Farm-Manager\logs\guides" -ItemType Directory -Force
+# Giải thích: Tạo đồng thời các thư mục theo đường dẫn tương đối.
+# -Force: Cho phép tự động tạo các thư mục cha còn thiếu và không báo lỗi nếu thư mục đã tồn tại.
+
+# 2. Tạo 3 file rỗng trong thư mục app
+New-Item -Path ".\Farm-Manager\code\app\main.py", ".\Farm-Manager\code\app\models.py", ".\Farm-Manager\code\app\utils.py" -ItemType File -Force
+# Giải thích: Tạo các tệp mã nguồn rỗng. 
+# -Force: Ghi đè/tạo mới file mà không hỏi xác nhận nếu file đã có sẵn.
+
+# 3. Sao chép đệ quy thư mục logs sang logs-backup
+Copy-Item -Path ".\Farm-Manager\logs" -Destination ".\Farm-Manager\logs-backup" -Recurse
+# Giải thích: Sao chép toàn bộ thư mục logs thành thư mục logs-backup nằm ngang hàng.
+# -Recurse: Sao chép đệ quy toàn bộ nội dung (bao gồm thư mục con 'guides' và tất cả các file bên trong), tránh lỗi chỉ chép vỏ thư mục rỗng.
+
+Phần 2: Kiểm thử & Giải thích
+Get-ChildItem -Path .\Farm-Manager -Recurse
+# Hoặc kiểm tra dạng cây:
+tree /f .\Farm-Manager
+
+Tại sao cần dùng đường dẫn tương đối (.\) thay vì đường dẫn tuyệt đối (C:\...)?
+
+Tính linh hoạt & Di động (Portability): Đường dẫn tương đối giúp câu lệnh hoạt động chính xác trên bất kỳ máy tính hay thư mục làm việc nào mà không bị gắn cứng (hard-code) vào cấu trúc ổ đĩa cụ thể (như C:\Users\... hay D:\Project\...).
+
+An toàn & Dễ chia sẻ: Tránh lỗi "Path not found" khi chia sẻ mã nguồn cho người khác hoặc triển khai trên hệ thống khác.
